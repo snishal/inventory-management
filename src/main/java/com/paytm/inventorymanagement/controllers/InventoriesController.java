@@ -4,6 +4,7 @@ import com.paytm.inventorymanagement.models.Inventory;
 import com.paytm.inventorymanagement.repositories.InventoryRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class InventoriesController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Inventory create(@RequestBody final Inventory inventory){
         return inventoryRepository.saveAndFlush(inventory);
     }
