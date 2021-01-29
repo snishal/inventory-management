@@ -21,7 +21,7 @@ public class InventoriesController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public Inventory get(@PathVariable Long id){
+    public Inventory get(@PathVariable Integer id){
         return inventoryRepository.getOne(id);
     }
 
@@ -31,12 +31,12 @@ public class InventoriesController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Integer id){
         inventoryRepository.deleteById(id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Inventory update(@PathVariable Long id, @RequestBody Inventory inventory){
+    public Inventory update(@PathVariable Integer id, @RequestBody Inventory inventory){
         Inventory existingInventory = inventoryRepository.getOne(id);
         BeanUtils.copyProperties(inventory, existingInventory, "id");
         return inventoryRepository.saveAndFlush(existingInventory);
