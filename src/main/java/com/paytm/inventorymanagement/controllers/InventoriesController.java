@@ -23,13 +23,13 @@ public class InventoriesController {
     @GetMapping
     @RequestMapping("{id}")
     public Inventory get(@PathVariable Integer id){
-        return inventoryRepository.getOne(id);
+        return inventoryRepository.findById(id).get();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Inventory create(@RequestBody final Inventory inventory){
-        return inventoryRepository.saveAndFlush(inventory);
+        return inventoryRepository.save(inventory);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -41,6 +41,6 @@ public class InventoriesController {
     public Inventory update(@PathVariable Integer id, @RequestBody Inventory inventory){
         Inventory existingInventory = inventoryRepository.getOne(id);
         BeanUtils.copyProperties(inventory, existingInventory, "id");
-        return inventoryRepository.saveAndFlush(existingInventory);
+        return inventoryRepository.save(existingInventory);
     }
 }

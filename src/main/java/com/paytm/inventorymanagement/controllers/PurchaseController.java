@@ -19,7 +19,7 @@ public class PurchaseController {
     @RequestMapping("{id}/{quantity}")
     public void purchase(@PathVariable Integer id, @PathVariable Integer quantity){
         if(inventoryRepository.existsById(id)){
-            Inventory inventory = inventoryRepository.getOne(id);
+            Inventory inventory = inventoryRepository.findById(id).get();
             if(quantity <= inventory.getQuantity()){
                 inventory.setQuantity(inventory.getQuantity() - quantity);
                 inventoryRepository.save(inventory);
