@@ -2,6 +2,7 @@ package com.paytm.inventorymanagement.controllers;
 
 import com.paytm.inventorymanagement.models.Inventory;
 import com.paytm.inventorymanagement.repositories.InventoryRepository;
+import com.paytm.inventorymanagement.services.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,20 +15,14 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/purchase")
 public class PurchaseController {
     @Autowired
-    private InventoryRepository inventoryRepository;
+    private PurchaseService purchaseService;
 
     @RequestMapping("{id}/{quantity}")
     public void purchase(@PathVariable Integer id, @PathVariable Integer quantity){
-        if(inventoryRepository.existsById(id)){
-            Inventory inventory = inventoryRepository.findById(id).get();
-            if(quantity <= inventory.getQuantity()){
-                inventory.setQuantity(inventory.getQuantity() - quantity);
-                inventoryRepository.save(inventory);
-            }else{
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not Enough Quantity of Inventory");
-            }
-        }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inventory Not Found");
+        try {
+            purchaseService.purchaseInventoryById(id, quantity);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }
