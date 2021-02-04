@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,10 +56,7 @@ public class InventoryControllerIntegrationTest {
     ResponseEntity<Inventory> response = this.testRestTemplate.postForEntity("/api/inventories", inventory, Inventory.class);
 
     assertThat(response.getStatusCode(), equalTo(HttpStatus.CREATED));
-
-    assertThat(response.getBody().getId(), equalTo(inventory.getId()));
-    assertThat(response.getBody().getName(), equalTo(inventory.getName()));
-    assertThat(response.getBody().getQuantity(), equalTo(inventory.getQuantity()));
+    assertTrue(response.getBody().equals(inventory));
   }
 
   @Test
