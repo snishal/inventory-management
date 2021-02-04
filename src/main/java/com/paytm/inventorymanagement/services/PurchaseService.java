@@ -12,16 +12,16 @@ public class PurchaseService {
     @Autowired
     private InventoryRepository inventoryRepository;
 
-    public void purchaseInventoryById(Integer id, Integer quantity) throws RuntimeException{
-        if(inventoryRepository.existsById(id)){
+    public Inventory purchaseInventoryById(Integer id, Integer quantity) throws RuntimeException {
+        if (inventoryRepository.existsById(id)) {
             Inventory inventory = inventoryRepository.findById(id).get();
-            if(quantity <= inventory.getQuantity()){
+            if (quantity <= inventory.getQuantity()) {
                 inventory.setQuantity(inventory.getQuantity() - quantity);
-                inventoryRepository.save(inventory);
-            }else{
+                return inventoryRepository.save(inventory);
+            } else {
                 throw new NotEnoughQuantityOfInventoryException("Not Enough Quantity of Inventory");
             }
-        }else{
+        } else {
             throw new InventoryNotFoundException("Inventory with id " + id + " not found.");
         }
     }
