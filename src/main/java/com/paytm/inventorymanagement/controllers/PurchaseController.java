@@ -18,9 +18,9 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     @RequestMapping("{id}/{quantity}")
-    public void purchase(@PathVariable Integer id, @PathVariable Integer quantity){
+    public Inventory purchase(@PathVariable Integer id, @PathVariable Integer quantity) {
         try {
-            purchaseService.purchaseInventoryById(id, quantity);
+            return purchaseService.purchaseInventoryById(id, quantity);
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
